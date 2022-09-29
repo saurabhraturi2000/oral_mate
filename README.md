@@ -1,6 +1,6 @@
 # oral_mate
 
-A new Flutter project.
+A Smart Toothbrush app connected with custom made smart toothbrush.
 
 ## Getting Started
 
