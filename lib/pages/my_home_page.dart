@@ -91,8 +91,6 @@ class _HomePageState extends State<HomePage> {
               calendarStyle: CalendarStyle(
                   tableBorder:
                       TableBorder(borderRadius: BorderRadius.circular(10))),
-              // rangeStartDay: DateTime(2022, 8, 24),
-              // rangeEndDay: DateTime(2022, 8, 30),
             ),
           ),
           const SizedBox(height: 20),
