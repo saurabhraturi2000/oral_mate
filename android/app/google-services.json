@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "687444738548",
+    "project_id": "oralmate-backend",
+    "storage_bucket": "oralmate-backend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:687444738548:android:80531fb0206d4c242279a1",
+        "android_client_info": {
+          "package_name": "com.example.oral_mate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "687444738548-6917nulcoab91p0p1bnb5572ep74piu4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAwizt0ofBF9TR1VDMsdaBLYqjk9TARZs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "687444738548-6917nulcoab91p0p1bnb5572ep74piu4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
