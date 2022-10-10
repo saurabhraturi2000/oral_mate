@@ -31,7 +31,9 @@ class AuthController extends GetxController {
     if (user == null) {
       Get.offAll(() => const LoginPage());
     } else {
-      Get.offAll(() => const HomePage());
+      Get.offAll(() => HomePage(
+            uid: user.uid,
+          ));
     }
   }
 
