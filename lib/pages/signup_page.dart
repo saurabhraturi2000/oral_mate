@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oral_mate/controller/auth_controller.dart';
@@ -35,12 +37,17 @@ class _SignupPageState extends State<SignupPage> {
             ),
             Stack(
               children: [
-                const CircleAvatar(
-                  radius: 64,
-                  backgroundImage:
-                      NetworkImage("http://www.gravatar.com/avatar/?d=mp"),
-                  backgroundColor: Colors.black,
-                ),
+                Obx(() => CircleAvatar(
+                      radius: 64,
+                      backgroundImage:
+                          AuthController.instance.isProfilePicPathSet.value ==
+                                  true
+                              ? FileImage(AuthController.instance.profilePhoto!)
+                                  as ImageProvider
+                              : const NetworkImage(
+                                  "http://www.gravatar.com/avatar/?d=mp"),
+                      backgroundColor: Colors.black,
+                    )),
                 Positioned(
                   bottom: -10,
                   left: 80,

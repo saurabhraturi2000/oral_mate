@@ -16,6 +16,8 @@ class AuthController extends GetxController {
   static AuthController instance = Get.find();
   late Rx<User?> _user;
 
+  var isProfilePicPathSet = false.obs;
+
   late Rx<File?> _pickedImage;
   File? get profilePhoto => _pickedImage.value;
 
@@ -41,6 +43,7 @@ class AuthController extends GetxController {
     final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
+      isProfilePicPathSet.value = true;
       Get.snackbar('profile picture',
           'you have successfully selected your profile picture');
     }
