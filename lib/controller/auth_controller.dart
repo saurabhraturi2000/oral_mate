@@ -7,8 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:oral_mate/model/user.dart' as model;
+import 'package:oral_mate/pages/find_device_screen.dart';
 import 'package:oral_mate/pages/login_page.dart';
-import 'package:oral_mate/pages/my_home_page.dart';
 
 import '../constants.dart';
 
@@ -33,9 +33,7 @@ class AuthController extends GetxController {
     if (user == null) {
       Get.offAll(() => const LoginPage());
     } else {
-      Get.offAll(() => HomePage(
-            uid: user.uid,
-          ));
+      Get.offAll(() => const FindDevicesScreen());
     }
   }
 
