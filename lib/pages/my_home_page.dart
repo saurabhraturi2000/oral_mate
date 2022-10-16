@@ -19,6 +19,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     profileController.updateUserId(widget.uid);
+
     super.initState();
   }
 
