@@ -42,7 +42,8 @@ dependencies:
   get: ^4.6.5
   image_picker: ^0.8.5+3
   cached_network_image: ^3.2.1
-  flutter_blue: ^0.8.0
+  flutter_bluetooth_serial: ^0.4.0
+  
 
 dev_dependencies:
   flutter_test:
