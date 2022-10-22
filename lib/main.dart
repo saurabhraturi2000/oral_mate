@@ -22,7 +22,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
           primarySwatch: Colors.blue,
-          scaffoldBackgroundColor: const Color(0xFFFAFAFF)),
+          scaffoldBackgroundColor: const Color(0xFFFAFAFF),
+          backgroundColor: Colors.white),
       home: const CircularProgressIndicator(),
     );
   }

@@ -19,7 +19,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     profileController.updateUserId(widget.uid);
-
     super.initState();
   }
 
@@ -28,6 +27,11 @@ class _HomePageState extends State<HomePage> {
     return GetBuilder<ProfileController>(
         init: ProfileController(),
         builder: (controller) {
+          if (controller.user.isEmpty) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
           return Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.transparent,

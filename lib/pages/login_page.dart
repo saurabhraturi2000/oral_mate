@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:oral_mate/controller/auth_controller.dart';
+import 'package:oral_mate/constants.dart';
 import 'package:oral_mate/pages/signup_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             ElevatedButton(
                 onPressed: () {
-                  AuthController.instance.login(
+                  authController.login(
                     _emailController.text.trim(),
                     _passwordController.text.trim(),
                   );

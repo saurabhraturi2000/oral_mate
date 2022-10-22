@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:get/get.dart';
-import 'package:oral_mate/pages/data.dart';
 import 'package:oral_mate/pages/discovery_page.dart';
 import 'package:oral_mate/pages/my_home_page.dart';
 
+// ignore: must_be_immutable
 class BluetoothPage extends StatefulWidget {
-  const BluetoothPage({Key? key}) : super(key: key);
+  String userUid;
+  BluetoothPage({Key? key, required this.userUid}) : super(key: key);
 
   @override
   State<BluetoothPage> createState() => _BluetoothPageState();
@@ -71,7 +72,7 @@ class _BluetoothPageState extends State<BluetoothPage> {
                 );
 
                 if (selectedDevice != null) {
-                  print('Discovery -> selected ' + selectedDevice!.address);
+                  print('Discovery -> selected ${selectedDevice!.address}');
                 } else {
                   print('Discovery -> no device selected');
                 }
@@ -93,9 +94,10 @@ class _BluetoothPageState extends State<BluetoothPage> {
         ElevatedButton(
           onPressed: (selectedDevice != null)
               ? () {
-                  Get.to(DataPage(
-                    device: selectedDevice!,
-                  ));
+                  Get.to(() => HomePage(uid: widget.userUid));
+                  // Get.to(DataPage(
+                  //   device: selectedDevice!,
+                  // ));
                 }
               : null,
           child: ((selectedDevice == null)
