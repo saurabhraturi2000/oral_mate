@@ -38,7 +38,20 @@ class _BluetoothPageState extends State<BluetoothPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Bluetooth")),
+      appBar: AppBar(
+        title: const Text("Bluetooth"),
+        actions: [
+          GestureDetector(
+            onTap: () => Get.to(() => HomePage(uid: widget.userUid)),
+            child: Container(
+                margin: const EdgeInsets.only(top: 15, right: 10),
+                child: const Text(
+                  "SKIP",
+                  style: TextStyle(fontSize: 20),
+                )),
+          )
+        ],
+      ),
       body: ListView(children: [
         SwitchListTile(
             title: const Text('Bluetooth status'),

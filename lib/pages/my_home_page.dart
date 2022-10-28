@@ -35,23 +35,36 @@ class _HomePageState extends State<HomePage> {
           return Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.transparent,
+              automaticallyImplyLeading: false,
               elevation: 0,
-              title: Row(children: const [
-                Text(
-                  "Oral",
-                  style: TextStyle(
-                    color: Color(0xFF47ABE0),
-                    fontSize: 25,
+              title: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Text(
+                    "Oral",
+                    style: TextStyle(
+                      color: Color(0xFF47ABE0),
+                      fontSize: 25,
+                    ),
                   ),
-                ),
-                Text(
-                  "Mate",
-                  style: TextStyle(
-                    color: Color(0xFF4643D3),
-                    fontSize: 25,
+                  Text(
+                    "Mate",
+                    style: TextStyle(
+                      color: Color(0xFF4643D3),
+                      fontSize: 25,
+                    ),
                   ),
-                ),
-              ]),
+                ],
+              ),
+              actions: [
+                GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                        margin: const EdgeInsets.all(10),
+                        child: const Icon(Icons.history))),
+              ],
+              actionsIconTheme:
+                  const IconThemeData(color: Colors.black, size: 40),
             ),
             body: SingleChildScrollView(
               child: Column(
@@ -59,10 +72,11 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Container(
                       width: double.infinity,
-                      height: 200,
+                      height: 350,
                       margin: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                           color: Colors.transparent,
+                          border: Border.all(color: Colors.black),
                           borderRadius: BorderRadius.circular(20)),
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -71,8 +85,8 @@ class _HomePageState extends State<HomePage> {
                               child: CachedNetworkImage(
                                 imageUrl: controller.user['profilePhoto'],
                                 fit: BoxFit.cover,
-                                height: 100,
-                                width: 100,
+                                height: 120,
+                                width: 120,
                                 placeholder: (context, url) =>
                                     const CircularProgressIndicator(),
                                 errorWidget: (context, url, error) =>
@@ -81,7 +95,6 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                             ),
-
                             const SizedBox(height: 10),
                             Text(
                               controller.user['name'],
@@ -90,7 +103,21 @@ class _HomePageState extends State<HomePage> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            const SizedBox(height: 10),
+                            // Container(
+                            //   margin: const EdgeInsets.all(10),
+                            //   width: 200,
+                            //   height: 35,
+                            //   alignment: Alignment.center,
+                            //   decoration: const BoxDecoration(
+                            //     color: Colors.red,
+                            //     borderRadius:
+                            //         BorderRadius.all(Radius.circular(20)),
+                            //   ),
+                            //   child: const Text(
+                            //     "saurabhraturi@gmail.com",
+                            //     textAlign: TextAlign.center,
+                            //   ),
+                            // ),
                             // Container(
                             //   margin: const EdgeInsets.all(10),
                             //   width: 100,
@@ -98,10 +125,26 @@ class _HomePageState extends State<HomePage> {
                             //   alignment: Alignment.center,
                             //   decoration: const BoxDecoration(
                             //     color: Colors.red,
-                            //     borderRadius: BorderRadius.all(Radius.circular(20)),
+                            //     borderRadius:
+                            //         BorderRadius.all(Radius.circular(20)),
                             //   ),
                             //   child: const Text(
                             //     "Connected",
+                            //     textAlign: TextAlign.center,
+                            //   ),
+                            // ),
+                            // Container(
+                            //   margin: const EdgeInsets.all(10),
+                            //   width: 100,
+                            //   height: 35,
+                            //   alignment: Alignment.center,
+                            //   decoration: const BoxDecoration(
+                            //     color: Colors.red,
+                            //     borderRadius:
+                            //         BorderRadius.all(Radius.circular(20)),
+                            //   ),
+                            //   child: const Text(
+                            //     "signout",
                             //     textAlign: TextAlign.center,
                             //   ),
                             // ),
@@ -119,16 +162,22 @@ class _HomePageState extends State<HomePage> {
                         startingDayOfWeek: StartingDayOfWeek.monday,
                         calendarFormat: CalendarFormat.week,
                         headerStyle: const HeaderStyle(
-                            formatButtonVisible: false, titleCentered: true),
+                            formatButtonVisible: false,
+                            titleCentered: true,
+                            titleTextStyle: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
                         calendarStyle: CalendarStyle(
                             tableBorder: TableBorder(
                                 borderRadius: BorderRadius.circular(10))),
                       ),
                     ),
-                    const SizedBox(height: 20),
                     Container(
                       width: MediaQuery.of(context).size.width,
+                      padding: const EdgeInsets.all(10),
                       margin: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.black)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -208,30 +257,30 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                     ),
-                    Container(
-                      width: double.infinity,
-                      height: 100,
-                      margin: const EdgeInsets.all(10),
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Row(
-                        children: const [
-                          Icon(Icons.ac_unit_outlined),
-                          SizedBox(width: 30),
-                          Text(
-                            "History",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Spacer(),
-                          Icon(Icons.chevron_right),
-                        ],
-                      ),
-                    ),
+                    // Container(
+                    //   width: double.infinity,
+                    //   height: 100,
+                    //   margin: const EdgeInsets.all(10),
+                    //   padding: const EdgeInsets.all(10),
+                    //   decoration: BoxDecoration(
+                    //       border: Border.all(color: Colors.black),
+                    //       borderRadius: BorderRadius.circular(20)),
+                    //   child: Row(
+                    //     children: const [
+                    //       Icon(Icons.ac_unit_outlined),
+                    //       SizedBox(width: 30),
+                    //       Text(
+                    //         "History",
+                    //         style: TextStyle(
+                    //           fontSize: 20,
+                    //           fontWeight: FontWeight.w500,
+                    //         ),
+                    //       ),
+                    //       Spacer(),
+                    //       Icon(Icons.chevron_right),
+                    //     ],
+                    //   ),
+                    // ),
                     GestureDetector(
                       onTap: () {
                         AuthController.instance.logOut();
