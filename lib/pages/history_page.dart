@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:oral_mate/controller/history_controller.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -9,6 +11,8 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
+  HistoryController historyController = Get.put(HistoryController());
+
   CalendarFormat format = CalendarFormat.week;
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:get/get.dart';
-import 'package:oral_mate/pages/data.dart';
 import 'package:oral_mate/pages/discovery_page.dart';
 import 'package:oral_mate/pages/my_home_page.dart';
 
