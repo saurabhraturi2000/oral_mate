@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oral_mate/controller/auth_controller.dart';
 import 'package:oral_mate/controller/profile_controller.dart';
+import 'package:oral_mate/pages/history_page.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class HomePage extends StatefulWidget {
@@ -57,11 +58,12 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               actions: [
-                GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                        margin: const EdgeInsets.all(10),
-                        child: const Icon(Icons.history))),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () => Get.to(() => const HistoryPage()),
+                    child: const Icon(Icons.history),
+                  ),
+                ),
               ],
               actionsIconTheme:
                   const IconThemeData(color: Colors.black, size: 40),
@@ -162,13 +164,18 @@ class _HomePageState extends State<HomePage> {
                         startingDayOfWeek: StartingDayOfWeek.monday,
                         calendarFormat: CalendarFormat.week,
                         headerStyle: const HeaderStyle(
-                            formatButtonVisible: false,
-                            titleCentered: true,
-                            titleTextStyle: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
+                          formatButtonVisible: false,
+                          titleCentered: true,
+                          titleTextStyle: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         calendarStyle: CalendarStyle(
-                            tableBorder: TableBorder(
-                                borderRadius: BorderRadius.circular(10))),
+                          tableBorder: TableBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
                       ),
                     ),
                     Container(
