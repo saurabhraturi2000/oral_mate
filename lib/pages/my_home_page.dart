@@ -1,10 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:oral_mate/controller/auth_controller.dart';
 import 'package:oral_mate/controller/profile_controller.dart';
 import 'package:oral_mate/pages/history_page.dart';
 import 'package:table_calendar/table_calendar.dart';
+
+import '../controller/history_controller.dart';
 
 class HomePage extends StatefulWidget {
   final String uid;
@@ -16,11 +20,33 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final ProfileController profileController = Get.put(ProfileController());
+  HistoryController historyController = Get.put(HistoryController());
+
+  Map<String, dynamic>? mySelectedEvents = {};
 
   @override
   void initState() {
     profileController.updateUserId(widget.uid);
+    historyController.updateUserId(widget.uid);
     super.initState();
+    loadPreviousEvents();
+  }
+
+  loadPreviousEvents() async {
+    var myEvents = await historyController.getActivity();
+
+    print(mySelectedEvents);
+    setState(() {
+      mySelectedEvents = myEvents;
+    });
+  }
+
+  List _listOfDayEvents(DateTime dateTime) {
+    if (mySelectedEvents?[DateFormat('yyyy-MM-dd').format(dateTime)] != null) {
+      return mySelectedEvents![DateFormat('yyyy-MM-dd').format(dateTime)]!;
+    } else {
+      return [];
+    }
   }
 
   @override
@@ -29,8 +55,10 @@ class _HomePageState extends State<HomePage> {
         init: ProfileController(),
         builder: (controller) {
           if (controller.user.isEmpty) {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
             );
           }
           return Scaffold(
@@ -59,9 +87,14 @@ class _HomePageState extends State<HomePage> {
               ),
               actions: [
                 Center(
-                  child: ElevatedButton(
+                  child: IconButton(
+                    icon: const FaIcon(
+                      FontAwesomeIcons.chartSimple,
+                    ),
                     onPressed: () => Get.to(() => const HistoryPage()),
-                    child: const Icon(Icons.history),
+                    iconSize: 30,
+                    tooltip: 'History',
+                    splashColor: Colors.amber,
                   ),
                 ),
               ],
@@ -162,7 +195,8 @@ class _HomePageState extends State<HomePage> {
                         firstDay: DateTime(2020),
                         lastDay: DateTime(2023),
                         startingDayOfWeek: StartingDayOfWeek.monday,
-                        calendarFormat: CalendarFormat.week,
+                        calendarFormat: CalendarFormat.month,
+                        eventLoader: _listOfDayEvents,
                         headerStyle: const HeaderStyle(
                           formatButtonVisible: false,
                           titleCentered: true,
