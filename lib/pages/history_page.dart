@@ -38,8 +38,6 @@ class _HistoryPageState extends State<HistoryPage> {
 
   loadPreviousEvents() async {
     var myEvents = await historyController.getActivity();
-
-    print(mySelectedEvents);
     setState(() {
       mySelectedEvents = myEvents;
     });
@@ -104,10 +102,6 @@ class _HistoryPageState extends State<HistoryPage> {
                 //Navigator.pop(context);
                 return;
               } else {
-                print(strokesController.text);
-                print(pressureController.text);
-                print(timeController.text);
-
                 setState(() {
                   if (mySelectedEvents?[
                           DateFormat('yyyy-MM-dd').format(_selectedDate!)] !=
@@ -177,7 +171,6 @@ class _HistoryPageState extends State<HistoryPage> {
                     _selectedDate = selectedDay;
                     _focusedDay = focusedDay;
                   });
-                  print(_focusedDay);
                 }
               },
               selectedDayPredicate: (day) {

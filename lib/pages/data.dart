@@ -12,20 +12,35 @@ class DataPage extends StatefulWidget {
 }
 
 class _DataPageState extends State<DataPage> {
+  var count;
+  var force;
+  BluetoothConnection? connection;
   @override
-  Future<void> initState() async {
-    // Some simplest connection :F
+  void initState() {
+    super.initState();
+    getConnection();
+  }
+
+  Future<void> getConnection() async {
     try {
-      BluetoothConnection connection =
-          await BluetoothConnection.toAddress(widget.device.address);
+      connection = await BluetoothConnection.toAddress(widget.device.address);
       print('Connected to the device');
 
-      connection.input?.listen((data) {
-        print(data);
-        print('Data incoming: ${ascii.decode(data)}');
+      connection!.input?.listen((data) {
+        var values = ascii.decode(data);
+        print(values);
+        if (values.contains('Count') == true) {
+          setState(() {
+            count = values.substring(values.indexOf('count') + 1);
+          });
+        } else if (values.contains('force') == true) {
+          setState(() {
+            force = values.substring(values.indexOf('applied:') + 1);
+          });
+        }
 
         if (ascii.decode(data).contains('!')) {
-          connection.finish(); // Closing connection
+          connection!.finish(); // Closing connection
           print('Disconnecting by local host');
         }
       }).onDone(() {
@@ -34,17 +49,23 @@ class _DataPageState extends State<DataPage> {
     } catch (exception) {
       print('Cannot connect, exception occured');
     }
-    super.initState();
+  }
+
+  @override
+  void dispose() {
+    connection!.finish();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: Text("Home page"),
-        ),
-      ),
+          child: Center(
+              child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [Text('$count'), Text('$force')],
+      ))),
     );
   }
 }

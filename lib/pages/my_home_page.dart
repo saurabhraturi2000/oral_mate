@@ -1,18 +1,25 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:oral_mate/controller/auth_controller.dart';
 import 'package:oral_mate/controller/profile_controller.dart';
+import 'package:oral_mate/pages/data.dart';
 import 'package:oral_mate/pages/history_page.dart';
+import 'package:oral_mate/widgets/activity_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../controller/history_controller.dart';
 
 class HomePage extends StatefulWidget {
   final String uid;
-  const HomePage({Key? key, required this.uid}) : super(key: key);
+  final BluetoothDevice? device;
+  final bool isConnected;
+  const HomePage(
+      {Key? key, required this.uid, this.device, this.isConnected = false})
+      : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -23,6 +30,9 @@ class _HomePageState extends State<HomePage> {
   HistoryController historyController = Get.put(HistoryController());
 
   Map<String, dynamic>? mySelectedEvents = {};
+  var today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+  bool isTodayEvent = false;
 
   @override
   void initState() {
@@ -34,11 +44,16 @@ class _HomePageState extends State<HomePage> {
 
   loadPreviousEvents() async {
     var myEvents = await historyController.getActivity();
-
-    print(mySelectedEvents);
     setState(() {
       mySelectedEvents = myEvents;
     });
+
+    if (mySelectedEvents![today] != null) {
+      isTodayEvent = true;
+      setState(() {});
+    } else {
+      isTodayEvent = false;
+    }
   }
 
   List _listOfDayEvents(DateTime dateTime) {
@@ -47,6 +62,13 @@ class _HomePageState extends State<HomePage> {
     } else {
       return [];
     }
+  }
+
+  @override
+  void dispose() {
+    mySelectedEvents?.clear();
+    profileController.dispose();
+    super.dispose();
   }
 
   @override
@@ -153,21 +175,49 @@ class _HomePageState extends State<HomePage> {
                             //     textAlign: TextAlign.center,
                             //   ),
                             // ),
-                            // Container(
-                            //   margin: const EdgeInsets.all(10),
-                            //   width: 100,
-                            //   height: 35,
-                            //   alignment: Alignment.center,
-                            //   decoration: const BoxDecoration(
-                            //     color: Colors.red,
-                            //     borderRadius:
-                            //         BorderRadius.all(Radius.circular(20)),
-                            //   ),
-                            //   child: const Text(
-                            //     "Connected",
-                            //     textAlign: TextAlign.center,
-                            //   ),
-                            // ),
+                            (widget.isConnected)
+                                ? Container(
+                                    margin: const EdgeInsets.all(10),
+                                    width: 110,
+                                    height: 35,
+                                    alignment: Alignment.center,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.green,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20)),
+                                    ),
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Icon(Icons.bluetooth_connected),
+                                          Text(
+                                            "Connected",
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ]),
+                                  )
+                                : Container(
+                                    margin: const EdgeInsets.all(10),
+                                    width: 130,
+                                    height: 35,
+                                    alignment: Alignment.center,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20)),
+                                    ),
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Icon(Icons.bluetooth_disabled),
+                                          Text(
+                                            "Disconnected",
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ]),
+                                  )
                             // Container(
                             //   margin: const EdgeInsets.all(10),
                             //   width: 100,
@@ -212,116 +262,52 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: const EdgeInsets.all(10),
-                      margin: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.black)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "TODAY ACTIVITY",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                    isTodayEvent
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  "TODAY ACTIVITY",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              ..._listOfDayEvents(DateTime.now()).map(
+                                (myEvents) => ActivityWidget(
+                                  strokes: myEvents['strokes'],
+                                  pressure: myEvents['pressure'],
+                                  time: myEvents['time'],
+                                ),
+                              ),
+                              Center(
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  child: const Text("Start Brushing"),
+                                ),
+                              ),
+                            ],
+                          )
+                        : Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: const EdgeInsets.all(10),
+                            margin: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: Colors.black)),
+                            child: Center(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Get.to(
+                                      () => (DataPage(device: widget.device!)));
+                                },
+                                child: const Text("Start Brushing"),
+                              ),
                             ),
                           ),
-                          const SizedBox(height: 20),
-                          Row(
-                            children: const [
-                              Icon(Icons.ac_unit_outlined),
-                              SizedBox(width: 30),
-                              Text(
-                                "Brush Time",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Spacer(),
-                              Text(
-                                "2min 30sec",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            children: const [
-                              Icon(Icons.ac_unit_outlined),
-                              SizedBox(width: 30),
-                              Text(
-                                "Pressure",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Spacer(),
-                              Text(
-                                "9.2 KOhm",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            children: const [
-                              Icon(Icons.ac_unit_outlined),
-                              SizedBox(width: 30),
-                              Text(
-                                "Brush Strokes",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Spacer(),
-                              Text(
-                                "110",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    // Container(
-                    //   width: double.infinity,
-                    //   height: 100,
-                    //   margin: const EdgeInsets.all(10),
-                    //   padding: const EdgeInsets.all(10),
-                    //   decoration: BoxDecoration(
-                    //       border: Border.all(color: Colors.black),
-                    //       borderRadius: BorderRadius.circular(20)),
-                    //   child: Row(
-                    //     children: const [
-                    //       Icon(Icons.ac_unit_outlined),
-                    //       SizedBox(width: 30),
-                    //       Text(
-                    //         "History",
-                    //         style: TextStyle(
-                    //           fontSize: 20,
-                    //           fontWeight: FontWeight.w500,
-                    //         ),
-                    //       ),
-                    //       Spacer(),
-                    //       Icon(Icons.chevron_right),
-                    //     ],
-                    //   ),
-                    // ),
                     GestureDetector(
                       onTap: () {
                         AuthController.instance.logOut();
@@ -336,7 +322,7 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(20)),
                         child: Row(
                           children: const [
-                            Icon(Icons.ac_unit_outlined),
+                            Icon(Icons.logout),
                             SizedBox(width: 30),
                             Text(
                               "Logout(just for now)",

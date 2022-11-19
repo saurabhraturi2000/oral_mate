@@ -109,7 +109,11 @@ class _BluetoothPageState extends State<BluetoothPage> {
           //DataPage(device: selectedDevice!
           onPressed: (selectedDevice != null)
               ? () {
-                  Get.to(() => HomePage(uid: widget.userUid));
+                  Get.to(() => HomePage(
+                        uid: widget.userUid,
+                        device: selectedDevice,
+                        isConnected: true,
+                      ));
                   // Get.to(DataPage(
                   //   device: selectedDevice!,
                   // ));
